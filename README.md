@@ -9,12 +9,12 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
 - `x.accepts(s)`
   - time complexity = $s$
 - [`x.complement()`](https://cs.stackexchange.com/questions/49318/dfa-complement-dfa-on-a-b-that-accepts-string-where-the-numbers-of-as-n)
-  - space complexity = $c(x)$
-  - time complexity = $c(x)$
+  - space complexity = $x$
+  - time complexity = $x$
 - [`x.intersect(y)`](https://math.stackexchange.com/questions/1166225/checking-understanding-of-dfa-regular-operations-intersection-and-star)
-  - space complexity = $c(x)c(y)$
-  - time complexity = $c(x)c(y)$
+  - space complexity = $xy$
+  - time complexity = $xy$
 - [`x.minimize()`](https://en.wikipedia.org/wiki/DFA_minimization)
-  - time complexity = $c(x)\log c(x)\Sigma_x$
+  - time complexity = $x\log x\Sigma_x$
 - `x.is_subset_of(y)`
 - [`x.reverse()`](https://cs.stackexchange.com/questions/39622/designing-a-dfa-and-the-reverse-of-it)

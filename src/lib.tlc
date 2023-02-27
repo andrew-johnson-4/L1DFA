@@ -39,3 +39,10 @@ export .intersect(left: DFA, right: DFA): DFA = {
    }}}
    p
 }
+
+export .complement(d: DFA) -> DFA {
+   DFA {
+      states: (for c in d.states yield not(c)),
+      transitions: d.transitions,
+   }
+}

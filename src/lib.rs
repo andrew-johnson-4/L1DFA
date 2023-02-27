@@ -44,3 +44,13 @@ impl DFA {
       p
    }
 }
+
+impl DFA {
+   pub fn complement(self: &DFA) -> DFA {
+      let d = self;
+      DFA {
+         states: d.states.iter().map(|c| !c).collect::<Vec<bool>>(),
+         transitions: self.transitions.clone(),
+      }
+   }
+}

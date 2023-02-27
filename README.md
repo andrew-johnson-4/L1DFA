@@ -7,6 +7,6 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
 - `x.accepts(s)`
 - `x.complement()`
 - `x.intersect(y)`
-- `x.minimize()`
+- [`x.minimize()`](https://en.wikipedia.org/wiki/DFA_minimization)
 - `x.is_subset_of(y)`
 - `x.reverse()`

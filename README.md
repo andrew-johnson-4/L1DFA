@@ -13,6 +13,6 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
   - space complexity = $c(x)c(y)$
   - time complexity = $c(x)c(y)$
 - [`x.minimize()`](https://en.wikipedia.org/wiki/DFA_minimization)
-  - time complexity = $c(x)\Sigma_x\log c(x)$
+  - time complexity = $c(x)\log c(x)\Sigma_x$
 - `x.is_subset_of(y)`
 - [`x.reverse()`](https://cs.stackexchange.com/questions/39622/designing-a-dfa-and-the-reverse-of-it)

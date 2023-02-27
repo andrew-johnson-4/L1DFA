@@ -7,6 +7,6 @@ fn empty_string() {
       transitions: std::collections::HashMap::new(),
    };
 
-   assert!( d.accepts(&"".to_string()) );
-   assert!( !d.accepts(&"a".to_string()) );
+   assert!( d.accepts("") );
+   assert!( !d.accepts("a") );
 }

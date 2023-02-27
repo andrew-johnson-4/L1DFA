@@ -6,7 +6,7 @@ pub struct DFA {
 }
 
 impl DFA {
-  pub fn accepts(self: &DFA, s: &String) -> bool {
+  pub fn accepts(self: &DFA, s: &str) -> bool {
     let d = self;
     let mut at:u64 = 0;
     for c in s.chars() {

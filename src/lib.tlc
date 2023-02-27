@@ -16,3 +16,26 @@ export .accepts(d: DFA, s: String): Boolean = {
    };
    d.states[at]
 };
+
+export .intersect(left: DFA, right: DFA): DFA = {
+   let p = DFA {
+      states: (for _ in range(left.states.length * right.states.length)
+               yield False),
+      transitions: map(),
+   };
+   for pi in range(p.states.length) {
+      let li = pi / right.states.length;
+      let ri = pi % right.states.length;
+      if left.states[li] && right.states[ri] {
+         p.states[pi] = True;
+      }
+   }
+   for ((ls,lc),lt) in left.transitions {
+   for ((rs,rc),rt) in left.transitions {
+   if lc == rc {
+      let ps = ls * right.states.length + rs;
+      let pt = lt * right.states.length + rt;
+      p.transitions[(ps,lc)] = pt;
+   }}}
+   p
+}

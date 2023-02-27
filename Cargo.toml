@@ -1,0 +1,10 @@
+[package]
+name = "l1-dfa"
+version = "0.0.1"
+authors = ["Andrew <andrew@subarctic.org>"]
+license = "MIT"
+description = "Deterministic Finite-State Automata Library for Rust, written in L1"
+edition = "2018"
+readme = "README.md"
+repository = "https://github.com/andrew-johnson-4/L1DFA"
+keywords = ["DFA","regex","automata","finite"]

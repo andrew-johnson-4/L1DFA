@@ -1,0 +1,18 @@
+import $"preludes/l1.tlc";
+
+type DFA = {
+   states: Boolean[],
+   transitions: Map<(Whole,Char),Whole>,
+};
+
+export .accepts(d: DFA, s: String): Boolean = {
+   let at:Whole = 0;
+   for c in s {
+      if (at,c) in d.transitions {
+         at = d.transitions[(at,c)];
+      } else {
+         return False;
+      }
+   };
+   d.states[at]
+};

@@ -40,9 +40,26 @@ export .intersect(left: DFA, right: DFA): DFA = {
    p
 }
 
-export .complement(d: DFA) -> DFA {
+export .complement(d: DFA): DFA {
    DFA {
       states: (for c in d.states yield not(c)),
       transitions: d.transitions,
    }
+}
+
+export .is_empty(d: DFA): Boolean {
+   let reached = 0;
+   let reach = set((0,));
+   while reach.length > reached {
+      reached = reach.length;
+      for ((ls,_lc),lt) in self.transitions {
+      if ls in reach {
+         reach.insert(lt);
+      }}
+   }
+   for ri in reach {
+   if self.states[ri] {
+      return False;
+   }}
+   True
 }

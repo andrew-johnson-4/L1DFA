@@ -49,4 +49,22 @@ impl DFA {
       transitions: self.transitions.clone(),
     }
   }
+
+  pub fn is_empty(self: &DFA) -> bool {
+    let mut reached = 0;
+    let mut reach = std::collections::HashSet::new();
+    reach.insert(0);
+    while reach.len() > reached {
+      reached = reach.len();
+      for ((ls,_lc),lt) in self.transitions.iter() {
+      if reach.contains(ls) {
+        reach.insert(*lt);
+      }}
+    }
+    for ri in reach.iter() {
+    if self.states[*ri as usize] {
+      return false;
+    }}
+    true
+  }
 }

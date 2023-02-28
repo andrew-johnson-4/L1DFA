@@ -72,3 +72,27 @@ impl DFA {
      self.intersect( &right.complement() ).is_empty()
   }
 }
+
+use regex_syntax::Parser;
+use regex_syntax::hir::HirKind;
+
+pub fn try_parse(regex: &str) -> Option<DFA> {
+   let Ok(hir) = Parser::new().parse(regex)
+   else { return None; };
+   let hir = hir.into_kind();
+   try_compile(&hir)
+}
+
+pub fn try_compile(hir: &HirKind) -> Option<DFA> {
+   match hir {
+      HirKind::Empty => unimplemented!("try_compile Empty Regex"),
+      HirKind::Literal(_l) => unimplemented!("try_compile Literal Regex"),
+      HirKind::Class(_c) => unimplemented!("try_compile Class Regex"),
+      HirKind::Anchor(_a) => unimplemented!("try_compile Anchor Regex"),
+      HirKind::WordBoundary(_wb) => unimplemented!("try_compile Word Boundary Regex"),
+      HirKind::Repetition(_r) => unimplemented!("try_compile Repetition Regex"),
+      HirKind::Group(_g) => unimplemented!("try_compile Group Regex"),
+      HirKind::Concat(_c) => unimplemented!("try_compile Concat Regex"),
+      HirKind::Alternation(_a) => unimplemented!("try_compile Alternation Regex"),
+   }
+}

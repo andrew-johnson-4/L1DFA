@@ -42,6 +42,43 @@ impl DFA {
     p
   }
 
+  pub fn union(self: &DFA, right: &DFA) -> DFA {
+    let left = self;
+    let mut p = DFA {
+      states: vec![false; left.states.len() * right.states.len()],
+      transitions: std::collections::HashMap::new(),
+    };
+    for pi in 0..p.states.len() {
+      let li = pi / right.states.len();
+      let ri = pi % right.states.len();
+      if left.states[li] || right.states[ri] {
+        p.states[pi] = true;
+      }
+    }
+    for ((ls,lc),lt) in left.transitions.iter() {
+    for ri in 0_u64..(right.states.len() as u64) {
+    if *ls >= ri {
+      let ps = ls * (right.states.len() as u64) + ri;
+      let pt = lt * (right.states.len() as u64) + ri;
+      p.transitions.insert((ps,*lc),pt);
+    }}}
+    for ((rs,rc),rt) in right.transitions.iter() {
+    for li in 0_u64..(left.states.len() as u64) {
+    if *rs >= li {
+      let ps = li * (right.states.len() as u64) + rs;
+      let pt = li * (right.states.len() as u64) + rt;
+      p.transitions.insert((ps,*rc),pt);
+    }}}
+    for ((ls,lc),lt) in left.transitions.iter() {
+    for ((rs,rc),rt) in right.transitions.iter() {
+    if lc == rc {
+      let ps = ls * (right.states.len() as u64) + rs;
+      let pt = lt * (right.states.len() as u64) + rt;
+      p.transitions.insert((ps,*lc),pt);
+    }}}
+    p
+  }
+
   pub fn complement(self: &DFA) -> DFA {
     let d = self;
     DFA {
@@ -87,6 +124,7 @@ pub fn try_parse(regex: &str) -> Option<DFA> {
 }
 
 pub fn compile_literal(cs: &str) -> DFA {
+   println!("compile literal: {}", cs);
    let cs = cs.chars().collect::<Vec<char>>();
    let mut states = vec![false; cs.len()+1];
    states[cs.len()] = true;
@@ -141,6 +179,12 @@ pub fn compile_ast(hir: &HirKind) -> DFA {
          }}
          dfa
       },
-      HirKind::Alternation(_a) => unimplemented!("try_compile Alternation Regex"),
+      HirKind::Alternation(a) => {
+         let mut dfa = compile_ast(a[0].kind());
+         for ai in 1..a.len() {
+            dfa = dfa.union(&compile_ast(a[ai].kind()));
+         }
+         dfa
+      }
    }
 }

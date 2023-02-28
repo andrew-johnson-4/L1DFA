@@ -71,19 +71,36 @@ impl DFA {
   pub fn is_subset_of(self: &DFA, right: &DFA) -> bool {
      self.intersect( &right.complement() ).is_empty()
   }
+
+  pub fn concatenate(self: &DFA, _right: &DFA) -> DFA {
+     unimplemented!("DFA::concatenate")
+  }
 }
 
 use regex_syntax::Parser;
-use regex_syntax::hir::HirKind;
+use regex_syntax::hir::{self,HirKind};
 
 pub fn try_parse(regex: &str) -> Option<DFA> {
    let Ok(hir) = Parser::new().parse(regex)
    else { return None; };
-   let hir = hir.into_kind();
-   try_compile(&hir)
+   Some(compile_ast(hir.kind()))
 }
 
-pub fn try_compile(hir: &HirKind) -> Option<DFA> {
+pub fn compile_literal(cs: &str) -> DFA {
+   let cs = cs.chars().collect::<Vec<char>>();
+   let mut states = vec![false; cs.len()+1];
+   states[cs.len()] = true;
+   let mut transitions = std::collections::HashMap::new();
+   for ci in 0..cs.len() {
+      transitions.insert((ci as u64,cs[ci]),(ci+1) as u64);
+   }
+   DFA {
+      states: states,
+      transitions: transitions,
+   }
+}
+
+pub fn compile_ast(hir: &HirKind) -> DFA {
    match hir {
       HirKind::Empty => unimplemented!("try_compile Empty Regex"),
       HirKind::Literal(_l) => unimplemented!("try_compile Literal Regex"),
@@ -92,7 +109,38 @@ pub fn try_compile(hir: &HirKind) -> Option<DFA> {
       HirKind::WordBoundary(_wb) => unimplemented!("try_compile Word Boundary Regex"),
       HirKind::Repetition(_r) => unimplemented!("try_compile Repetition Regex"),
       HirKind::Group(_g) => unimplemented!("try_compile Group Regex"),
-      HirKind::Concat(_c) => unimplemented!("try_compile Concat Regex"),
+      HirKind::Concat(cs) => {
+         enum C { S(String), K(HirKind) }
+         let mut ds: Vec<C> = Vec::new();
+         let mut sbuf = "".to_string();
+         for c in cs.iter() {
+            let ck = c.kind();
+            if let HirKind::Literal(kl) = ck {
+            match kl {
+               hir::Literal::Unicode(c) => { sbuf.push(*c); }
+               hir::Literal::Byte(b) => { sbuf.push(*b as char); }
+            }} else {
+               if sbuf.len()>0 {
+                  ds.push(C::S(sbuf.clone()));
+                  sbuf.clear();
+               }
+               ds.push(C::K(ck.clone()));
+            }
+         }
+         if sbuf.len()>0 {
+            ds.push(C::S(sbuf.clone()));
+         }
+         let mut dfa = match &ds[0] {
+            C::S(s) => { compile_literal(&s) },
+            C::K(k) => { compile_ast(&k) },
+         };
+         for di in 1..ds.len() {
+         match &ds[di] {
+            C::S(s) => { dfa = dfa.concatenate(&compile_literal(&s)) },
+            C::K(k) => { dfa = dfa.concatenate(&compile_ast(&k)) },
+         }}
+         dfa
+      },
       HirKind::Alternation(_a) => unimplemented!("try_compile Alternation Regex"),
    }
 }

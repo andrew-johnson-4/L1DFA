@@ -26,3 +26,4 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
 - [`x.reverse()`](https://cs.stackexchange.com/questions/39622/designing-a-dfa-and-the-reverse-of-it)
   - [space complexity](https://en.wikipedia.org/wiki/Powerset_construction) = $O(2^x)$
   - time complexity = $O(2^x)$
+  - worst case example: `/[01]{x}(01|10)*/`

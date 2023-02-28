@@ -31,7 +31,7 @@ export .intersect(left: DFA, right: DFA): DFA = {
       }
    }
    for ((ls,lc),lt) in left.transitions {
-   for ((rs,rc),rt) in left.transitions {
+   for ((rs,rc),rt) in right.transitions {
    if lc == rc {
       let ps = ls * right.states.length + rs;
       let pt = lt * right.states.length + rt;

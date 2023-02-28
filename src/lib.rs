@@ -123,7 +123,7 @@ pub fn try_parse(regex: &str) -> Option<DFA> {
    Some(compile_ast(hir.kind()))
 }
 
-pub fn compile_literal(cs: &str) -> DFA {
+fn compile_literal(cs: &str) -> DFA {
    println!("compile literal: {}", cs);
    let cs = cs.chars().collect::<Vec<char>>();
    let mut states = vec![false; cs.len()+1];
@@ -138,7 +138,7 @@ pub fn compile_literal(cs: &str) -> DFA {
    }
 }
 
-pub fn compile_ast(hir: &HirKind) -> DFA {
+fn compile_ast(hir: &HirKind) -> DFA {
    match hir {
       HirKind::Empty => unimplemented!("try_compile Empty Regex"),
       HirKind::Literal(_l) => unimplemented!("try_compile Literal Regex"),

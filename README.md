@@ -8,6 +8,8 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
   - time complexity = $O(2^x)$
 - `x.accepts(s)`
   - time complexity = $s$
+- `x.is_empty()`
+  - time complexity = $x$
 - [`x.complement()`](https://cs.stackexchange.com/questions/49318/dfa-complement-dfa-on-a-b-that-accepts-string-where-the-numbers-of-as-n)
   - space complexity = $x$
   - time complexity = $x$

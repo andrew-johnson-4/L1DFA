@@ -3,7 +3,7 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
 
 ### Features
 
-- `try_parse(regex)`
+- [`try_parse(regex)`](https://www.cs.cornell.edu/courses/cs312/2004fa/lectures/rec26.htm)
   - space complexity = $O(2^x)$
   - time complexity = $O(2^x)$
 - `x.accepts(s)`

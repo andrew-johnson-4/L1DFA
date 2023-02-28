@@ -1,6 +1,6 @@
 [package]
 name = "l1-dfa"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Andrew <andrew@subarctic.org>"]
 license = "MIT"
 description = "Deterministic Finite-State Automata Library for Rust, written in L1"

@@ -63,3 +63,7 @@ export .is_empty(d: DFA): Boolean {
    }}
    True
 }
+
+export .is_subset_of(l: &DFA, r: &DFA): Boolean {
+   l.intersect( r.complement() ).is_empty()
+}

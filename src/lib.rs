@@ -67,4 +67,8 @@ impl DFA {
     }}
     true
   }
+
+  pub fn is_subset_of(self: &DFA, right: &DFA) -> bool {
+     self.intersect( &right.complement() ).is_empty()
+  }
 }

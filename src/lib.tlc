@@ -6,7 +6,7 @@ type DFA = {
 };
 
 export .accepts(d: DFA, s: String): Boolean = {
-   let at:Whole = 0;
+   let at = 0;
    for c in s {
       if (at,c) in d.transitions {
          at = d.transitions[(at,c)];

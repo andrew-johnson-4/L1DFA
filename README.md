@@ -7,7 +7,7 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
   - space complexity = $O(2^x)$
   - time complexity = $O(2^x)$
   - note: most regexes aren't anywhere near this bad
-  - this complexity comes from expressions like this `/[01]*[01]{x}/`
+  - this complexity comes from expressions like this `/(01|10)*[01]{x}/`
 - `x.accepts(s)`
   - time complexity = $s$
 - `x.is_empty()`

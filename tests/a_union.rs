@@ -1,4 +1,4 @@
-use l1_dfa::{try_parse};
+use l1_dfa::{DFA,try_parse};
 
 #[test]
 fn re_ab_or_cd() {
@@ -28,6 +28,39 @@ fn re_abc_or_bcd() {
    assert!( !r.accepts("bc") );
    assert!( r.accepts("bcd") );
    assert!( !r.accepts("abb") );
+}
+
+#[test]
+fn ababcd() {
+   let mut abab = DFA {
+      states: vec![false,false,true],
+      transitions: std::collections::HashMap::new(),
+   };
+   abab.transitions.insert((0,'a'),1);
+   abab.transitions.insert((1,'b'),2);
+   abab.transitions.insert((2,'a'),1);
+   assert!( abab.accepts("ab") );
+   assert!( abab.accepts("abab") );
+
+   let mut abcd = DFA {
+      states: vec![false,false,false,false,true],
+      transitions: std::collections::HashMap::new(),
+   };
+   abcd.transitions.insert((0,'a'),1);
+   abcd.transitions.insert((1,'b'),2);
+   abcd.transitions.insert((2,'c'),3);
+   abcd.transitions.insert((3,'d'),4);
+   assert!( abcd.accepts("abcd") );
+
+   let ababcd = abab.union(&abcd);
+   assert!( !ababcd.accepts("") );
+   assert!( !ababcd.accepts("a") );
+   assert!(  ababcd.accepts("ab") );
+   assert!( !ababcd.accepts("aba") );
+   assert!(  ababcd.accepts("abab") );
+   assert!( !ababcd.accepts("abc") );
+   assert!(  ababcd.accepts("abcd") );
+   assert!( !ababcd.accepts("ababcd") );
 }
 
 #[test]

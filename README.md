@@ -17,7 +17,7 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
 - [`x.intersect(y)`](https://math.stackexchange.com/questions/1166225/checking-understanding-of-dfa-regular-operations-intersection-and-star)
   - space complexity = $xy$
   - time complexity = $xy$
-- [`x.union(y)`](https://stackoverflow.com/questions/4449950/how-do-you-construct-the-union-of-two-dfas)
+- [`x.union(y)`](https://math.stackexchange.com/questions/1808575/dfa-union-operation-how-to)
   - space complexity = $xy$
   - time complexity = $xy$
   - warning, this is a self-constructed algorithm that may not be completely correct

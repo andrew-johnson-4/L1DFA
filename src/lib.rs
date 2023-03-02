@@ -34,7 +34,7 @@ impl DFA {
     }
     for ((ls,lc),lt) in left.transitions.iter() {
     for ((rs,rc),rt) in right.transitions.iter() {
-    if lc == rc {
+    if lc==rc { //this is more strict than the simple product
       let ps = ls * (right.states.len() as u64) + rs;
       let pt = lt * (right.states.len() as u64) + rt;
       p.transitions.insert((ps,*lc),pt);
@@ -56,26 +56,12 @@ impl DFA {
       }
     }
     for ((ls,lc),lt) in left.transitions.iter() {
-    for ri in 0_u64..(right.states.len() as u64) {
-    if *ls >= ri {
-      let ps = ls * (right.states.len() as u64) + ri;
-      let pt = lt * (right.states.len() as u64) + ri;
-      p.transitions.insert((ps,*lc),pt);
-    }}}
     for ((rs,rc),rt) in right.transitions.iter() {
-    for li in 0_u64..(left.states.len() as u64) {
-    if *rs >= li {
-      let ps = li * (right.states.len() as u64) + rs;
-      let pt = li * (right.states.len() as u64) + rt;
-      p.transitions.insert((ps,*rc),pt);
-    }}}
-    for ((ls,lc),lt) in left.transitions.iter() {
-    for ((rs,rc),rt) in right.transitions.iter() {
-    if lc == rc {
       let ps = ls * (right.states.len() as u64) + rs;
       let pt = lt * (right.states.len() as u64) + rt;
       p.transitions.insert((ps,*lc),pt);
-    }}}
+      p.transitions.insert((ps,*rc),pt);
+    }}
     p
   }
 

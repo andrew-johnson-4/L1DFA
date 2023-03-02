@@ -20,6 +20,8 @@ Deterministic Finite-State Automata Library for Rust, written in L1.
 - [`x.union(y)`](https://stackoverflow.com/questions/4449950/how-do-you-construct-the-union-of-two-dfas)
   - space complexity = $xy$
   - time complexity = $xy$
+  - warning, this is a self-constructed algorithm that may not be completely correct
+  - for anybody who knows better, a review would be heartily appreciated
 - [`x.minimize()`](https://en.wikipedia.org/wiki/DFA_minimization)
   - time complexity = $x\log x\Sigma_x$
 - [`x.is_subset_of(y)`](https://cs.stackexchange.com/questions/9130/testing-whether-the-language-of-one-automaton-is-a-subset-of-another)

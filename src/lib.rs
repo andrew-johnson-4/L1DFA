@@ -110,7 +110,6 @@ pub fn try_parse(regex: &str) -> Option<DFA> {
 }
 
 fn compile_literal(cs: &str) -> DFA {
-   println!("compile literal: {}", cs);
    let cs = cs.chars().collect::<Vec<char>>();
    let mut states = vec![false; cs.len()+1];
    states[cs.len()] = true;

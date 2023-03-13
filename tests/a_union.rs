@@ -64,6 +64,35 @@ fn ababcd() {
 }
 
 #[test]
+fn ab_tough() {
+   let mut abab = DFA {
+      states: vec![false,false,true],
+      transitions: std::collections::HashMap::new(),
+   };
+   abab.transitions.insert((0,'a'),1);
+   abab.transitions.insert((1,'b'),2);
+   abab.transitions.insert((2,'a'),1);
+   assert!( abab.accepts("ab") );
+   assert!( abab.accepts("abab") );
+
+   let mut aa = DFA {
+      states: vec![false,false,true],
+      transitions: std::collections::HashMap::new(),
+   };
+   aa.transitions.insert((0,'a'),1);
+   aa.transitions.insert((1,'a'),2);
+   assert!( aa.accepts("aa") );
+
+   let ababaa = abab.union(&aa);
+   assert!( !ababaa.accepts("") );
+   assert!( !ababaa.accepts("a") );
+   assert!(  ababaa.accepts("aa") );
+   assert!(  ababaa.accepts("ab") );
+   assert!( !ababaa.accepts("aba") );
+   assert!(  ababaa.accepts("abab") );
+}
+
+#[test]
 fn re_aabbccdd() {
    let a = try_parse("(ab)*cd").unwrap();
    assert!( !a.accepts("") );

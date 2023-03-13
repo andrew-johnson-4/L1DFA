@@ -90,6 +90,36 @@ fn ab_tough() {
    assert!(  ababaa.accepts("ab") );
    assert!( !ababaa.accepts("aba") );
    assert!(  ababaa.accepts("abab") );
+   assert!( !ababaa.accepts("abaa") );
+}
+
+#[test]
+fn ab_tough2() {
+   let mut ab = DFA {
+      states: vec![true,false],
+      transitions: std::collections::HashMap::new(),
+   };
+   ab.transitions.insert((0,'a'),1);
+   ab.transitions.insert((1,'b'),0);
+   assert!( ab.accepts("") );
+   assert!( ab.accepts("ab") );
+   assert!( ab.accepts("abab") );
+
+   let mut aa = DFA {
+      states: vec![false,false,true],
+      transitions: std::collections::HashMap::new(),
+   };
+   aa.transitions.insert((0,'a'),1);
+   aa.transitions.insert((1,'a'),2);
+   assert!( aa.accepts("aa") );
+
+   let ababaa = ab.union(&aa);
+   assert!(  ababaa.accepts("") );
+   assert!( !ababaa.accepts("a") );
+   assert!(  ababaa.accepts("aa") );
+   assert!(  ababaa.accepts("ab") );
+   assert!( !ababaa.accepts("aba") );
+   assert!(  ababaa.accepts("abab") );
 }
 
 #[test]

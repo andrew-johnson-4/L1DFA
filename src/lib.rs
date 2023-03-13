@@ -6,6 +6,16 @@ pub struct DFA {
 }
 
 impl DFA {
+  pub fn print(self: &DFA) {
+    println!("STATES:");
+    for si in 0..self.states.len() {
+      println!("  {}: {}", si, self.states[si]); 
+    }
+    for ((s,c),t) in self.transitions.iter() {
+      println!("  {}:{} -> {}", s, c, t);
+    }
+  }
+
   pub fn accepts(self: &DFA, s: &str) -> bool {
     let d = self;
     let mut at:u64 = 0;
@@ -34,7 +44,7 @@ impl DFA {
     }
     for ((ls,lc),lt) in left.transitions.iter() {
     for ((rs,rc),rt) in right.transitions.iter() {
-    if lc==rc { //this is more strict than the simple product
+    if lc==rc {
       let ps = ls * (right.states.len() as u64) + rs;
       let pt = lt * (right.states.len() as u64) + rt;
       p.transitions.insert((ps,*lc),pt);
@@ -42,7 +52,39 @@ impl DFA {
     p
   }
 
+  pub fn complement(self: &DFA) -> DFA {
+    let d = self;
+    let mut states = d.states.iter().map(|c| !c).collect::<Vec<bool>>();
+    let mut alphabet = std::collections::HashSet::new();
+    let mut transitions = std::collections::HashMap::new();
+    for ((_,c),_) in self.transitions.iter() {
+       alphabet.insert(*c);
+    }
+    let mut null_transition = false;
+    for s in 0..(self.transitions.len() as u64) {
+    for c in alphabet.iter() {
+       if let Some(t) = self.transitions.get(&(s,*c)) {
+          transitions.insert((s,*c),*t);
+       } else {
+          null_transition = true;
+          transitions.insert((s,*c),self.transitions.len() as u64);
+       }
+    }}
+    if null_transition {
+       let ni = self.transitions.len() as u64;
+       states.push(true);
+       for c in alphabet.iter() {
+          transitions.insert((ni,*c),ni);
+       }
+    }
+    DFA {
+      states: states,
+      transitions: transitions,
+    }
+  }
+
   pub fn union(self: &DFA, right: &DFA) -> DFA {
+    //self.complement().intersect(&right.complement()).complement()
     let left = self;
     let mut p = DFA {
       states: vec![false; left.states.len() * right.states.len()],
@@ -63,14 +105,6 @@ impl DFA {
       p.transitions.insert((ps,*rc),pt);
     }}
     p
-  }
-
-  pub fn complement(self: &DFA) -> DFA {
-    let d = self;
-    DFA {
-      states: d.states.iter().map(|c| !c).collect::<Vec<bool>>(),
-      transitions: self.transitions.clone(),
-    }
   }
 
   pub fn is_empty(self: &DFA) -> bool {

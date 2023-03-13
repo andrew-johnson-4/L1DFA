@@ -15,6 +15,24 @@ fn intersect_1() {
    left.transitions.insert((2,'b'),2);
    left.transitions.insert((3,'b'),3);
 
+   assert!( !left.accepts("") );
+   assert!( !left.accepts("a") );
+   assert!( !left.accepts("b") );
+   assert!(  left.accepts("aa") );
+   assert!( !left.accepts("ab") );
+   assert!( !left.accepts("aaa") );
+   assert!(  left.accepts("aab") );
+   assert!( !left.accepts("aaaa") );
+   assert!( !left.accepts("aaab") );
+   assert!(  left.accepts("aabb") );
+   assert!(  left.accepts("aabbb") );
+   assert!(  left.accepts("babab") );
+   assert!(  left.accepts("ababb") );
+   assert!(  left.accepts("ababbb") );
+   assert!(  left.accepts("babab") );
+   assert!(  left.accepts("bababbb") );
+   assert!(  left.accepts("bbabbabbb") );
+
    let mut right = DFA {
       states: vec![false,false,true],
       transitions: std::collections::HashMap::new(),
@@ -25,6 +43,20 @@ fn intersect_1() {
    right.transitions.insert((0,'b'),1);
    right.transitions.insert((1,'b'),2);
    right.transitions.insert((2,'b'),2);
+
+   assert!( !right.accepts("") );
+   assert!( !right.accepts("a") );
+   assert!( !right.accepts("b") );
+   assert!( !right.accepts("aa") );
+   assert!( !right.accepts("ab") );
+   assert!( !right.accepts("ba") );
+   assert!(  right.accepts("bb") );
+   assert!(  right.accepts("abb") );
+   assert!(  right.accepts("bab") );
+   assert!(  right.accepts("bba") );
+   assert!(  right.accepts("bbb") );
+   assert!(  right.accepts("bbbba") );
+   assert!(  right.accepts("abbab") );
  
    let product = left.intersect(&right);
    assert!( product.states[0] == false  ); //(0,0)
@@ -40,6 +72,14 @@ fn intersect_1() {
    assert!( product.states[10] == false ); //(3,1)
    assert!( product.states[11] == false ); //(3,2)
 
+   assert!( !product.accepts("") );
+   assert!( product.accepts("aabb") );
+   assert!( product.accepts("abba") );
+   assert!( product.accepts("bbaa") );
+   assert!( product.accepts("bbbaa") );
+   assert!( !product.accepts("abbaa") );
+
+   /*
    assert_eq!( product.transitions.len(), 24 );
    assert_eq!( product.transitions.get(&(0,'a')), Some(&3) );
    assert_eq!( product.transitions.get(&(3,'a')), Some(&6) );
@@ -65,6 +105,7 @@ fn intersect_1() {
    assert_eq!( product.transitions.get(&(9,'b')), Some(&10) );
    assert_eq!( product.transitions.get(&(10,'b')), Some(&11) );
    assert_eq!( product.transitions.get(&(11,'b')), Some(&11) );
+   */
 }
 
 #[test]

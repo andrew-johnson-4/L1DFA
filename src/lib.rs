@@ -84,7 +84,9 @@ impl DFA {
   }
 
   pub fn union(self: &DFA, right: &DFA) -> DFA {
-    //self.complement().intersect(&right.complement()).complement()
+    //a union state is either rejected, on the left, on the right, or on both
+    //this algorithm still yields a O(xy) upper bound
+    //TODO: implement this algorithm as a fallback until the simpler algorithm is better understood
     let left = self;
     let mut p = DFA {
       states: vec![false; left.states.len() * right.states.len()],

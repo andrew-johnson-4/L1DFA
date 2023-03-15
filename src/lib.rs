@@ -101,10 +101,26 @@ impl DFA {
     }
     for ((ls,lc),lt) in left.transitions.iter() {
     for ((rs,rc),rt) in right.transitions.iter() {
+    if lc==rc {
       let ps = ls * (right.states.len() as u64) + rs;
       let pt = lt * (right.states.len() as u64) + rt;
       p.transitions.insert((ps,*lc),pt);
-      p.transitions.insert((ps,*rc),pt);
+    }}}
+    for ((ls,lc),lt) in left.transitions.iter() {
+    for rst in 0..(right.states.len() as u64) {
+      let ps = ls * (right.states.len() as u64) + rst;
+      let pt = lt * (right.states.len() as u64) + rst;
+      if !p.transitions.contains_key(&(ps,*lc)) {
+        p.transitions.insert((ps,*lc),pt);
+      }
+    }}
+    for lst in 0..(left.states.len() as u64) {
+    for ((rs,rc),rt) in right.transitions.iter() {
+      let ps = lst * (right.states.len() as u64) + rs;
+      let pt = lst * (right.states.len() as u64) + rt;
+      if !p.transitions.contains_key(&(ps,*rc)) {
+        p.transitions.insert((ps,*rc),pt);
+      }
     }}
     p
   }
